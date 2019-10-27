@@ -1,6 +1,7 @@
 {
   "name": "@dietime/mai_timetable",
   "version": "1.1.0",
+  "proxy": "https://mai.ru/",
   "description": "",
   "main": "index.js",
   "scripts": {
