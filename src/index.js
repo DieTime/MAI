@@ -3,16 +3,21 @@ import 'core-js/features/set';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import connect from '@vkontakte/vk-connect';
+import {Provider} from 'react-redux'
+import reducer from './reducers'
+import {createStore} from 'redux'
 import App from './App';
-// import registerServiceWorker from './sw';
 
-// Init VK  Mini App
+const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__() && window.__REDUX_DEVTOOLS_EXTENSION__());
+
+let schemeAttribute = document.createAttribute('scheme');
+schemeAttribute.value = 'bright_light';
+document.body.attributes.setNamedItem(schemeAttribute);
+
 connect.send('VKWebAppInit');
 
-// Если вы хотите, чтобы ваше веб-приложение работало в оффлайне и загружалось быстрее,
-// расскомментируйте строку с registerServiceWorker();
-// Но не забывайте, что на данный момент у технологии есть достаточно подводных камней
-// Подробнее про сервис воркеры можно почитать тут — https://vk.cc/8MHpmT
-// registerServiceWorker();
-
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+    <Provider store={store}>
+        <App/>
+    </Provider>, document.getElementById('root')
+);
