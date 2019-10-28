@@ -25,9 +25,8 @@ class TimeTable extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            weeksList: null,
             activeModal: null,
-            dataSet: null,
+            dataSet: [],
             currentWeek: {
                 text: 'Текущая неделя',
                 index: 0
@@ -82,7 +81,7 @@ class TimeTable extends Component {
     }
 
     getTimeTable = () => {
-        this.setState({dataSet: null});
+        this.setState({dataSet: []});
         let week = (this.state.currentWeek.text === 'Текущая неделя') ? '' : '&week=' + this.state.currentWeek.index;
         fetch('https://cors-anywhere.herokuapp.com/https://mai.ru/education/schedule/detail.php?group=' + this.props.store.group + week)
             .then((response) => response.text())
@@ -115,7 +114,10 @@ class TimeTable extends Component {
                     };
                     dataSet.push(dayObj);
                 }
-                this.setState({dataSet: dataSet});
+                return dataSet;
+            })
+            .then(data => {
+                this.setState({dataSet: data});
             })
     };
 
@@ -161,12 +163,10 @@ class TimeTable extends Component {
                         <FormLayoutGroup>
                             {this.state.weeks.map((text, index) => {
                                 return (
-                                    <Radio name="radio" onClick={() => {
-                                        this.setState({currentWeek: {text, index}});
+                                    <Radio name="radio" onClick={async () => {
+                                        await this.setState({currentWeek: {text, index}});
+                                        this.getTimeTable();
                                         this.modalBack();
-                                        if (text !== this.state.currentWeek.text) {
-                                            this.getTimeTable();
-                                        }
                                     }} key={text}>{
                                         (index !== 0 )
                                         ? this.dateReformat(text) + ' (Неделя ' + index + ')'
@@ -180,11 +180,13 @@ class TimeTable extends Component {
             </ModalRoot>
         );
 
-        if (this.state.weeksList !== null) {
-            return <Spinner size="large"
-                            style={{position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, margin: 'auto'}}/>
+        if (this.state.weeks.length === 0){
+            return (
+                <Spinner size="large"
+                         style={{position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, margin: 'auto'}}/>
+            )
         }
-        else if (this.state.dataSet === null){
+        else if (this.state.dataSet.length === 0){
             return (
                 <View id='main' activePanel='main' modal={modal}>
                     <Panel id='main'>
