@@ -95,7 +95,7 @@ class SelectGroup extends Component {
     getGroupsList = () => {
         this.setState({groups: []});
         this.setState({popout: <ScreenSpinner/>});
-        fetch('/education/schedule/?department=' + this.state.schedule + '&course=' + this.state.curse)
+        fetch('https://cors-anywhere.herokuapp.com/https://mai.ru/education/schedule/?department=' + this.state.schedule + '&course=' + this.state.curse)
             .then((response) => response.text())
             .then((html) => {
                 let parser = new DOMParser();

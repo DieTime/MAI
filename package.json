@@ -1,7 +1,7 @@
 {
   "name": "@dietime/mai_timetable",
   "version": "1.1.0",
-  "homepage": "https://dietime.github.io/MAI/",
+  "homepage": "./",
   "description": "MAI timetable",
   "main": "index.js",
   "scripts": {
