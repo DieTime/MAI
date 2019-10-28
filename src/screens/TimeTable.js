@@ -37,7 +37,7 @@ class TimeTable extends Component {
     }
 
     componentDidMount() {
-        fetch('/education/schedule/detail.php?group=' + this.props.store.group)
+        fetch('https://cors-anywhere.herokuapp.com/https://mai.ru/education/schedule/detail.php?group=' + this.props.store.group)
             .then((response) => response.text())
             .then((html)=>{
                 let parser = new DOMParser();
@@ -84,7 +84,7 @@ class TimeTable extends Component {
     getTimeTable = () => {
         this.setState({dataSet: null});
         let week = (this.state.currentWeek.text === 'Текущая неделя') ? '' : '&week=' + this.state.currentWeek.index;
-        fetch('/education/schedule/detail.php?group=' + this.props.store.group + week)
+        fetch('https://cors-anywhere.herokuapp.com/https://mai.ru/education/schedule/detail.php?group=' + this.props.store.group + week)
             .then((response) => response.text())
             .then((html)=>{
                 let parser = new DOMParser();
@@ -220,7 +220,7 @@ class TimeTable extends Component {
                         </PanelHeader>
                             {this.state.dataSet.map((item, index)=>{
                                 return (
-                                    <Div style={(index !== 0) ? {paddingTop: 0, paddingBottom: 14} : {paddingTop: 14, paddingBottom: 14}}>
+                                    <Div key={index} style={(index !== 0) ? {paddingTop: 0, paddingBottom: 14} : {paddingTop: 14, paddingBottom: 14}}>
                                         <Div style={{padding: 0}}>
                                             <Header level="secondary" style={{background: '#00a1f5', color: '#fff', height: 'auto', paddingRight: 20, paddingLeft: 20}} aside={<h3 style={{margin: 0, color: '#fff'}}>{item.day}</h3>}>
                                                 <h3 style={{margin: 0, color: '#fff'}}>{item.data}</h3>

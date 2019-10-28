@@ -1,12 +1,14 @@
 {
   "name": "@dietime/mai_timetable",
   "version": "1.1.0",
-  "proxy": "https://mai.ru/",
-  "description": "",
+  "homepage": "https://dietime.github.io/MAI/",
+  "description": "MAI timetable",
   "main": "index.js",
   "scripts": {
     "start": "cross-env HTTPS=true PORT=10888 react-scripts start",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "keywords": [],
   "author": "",
@@ -14,18 +16,21 @@
   "devDependencies": {
     "cross-env": "^5.2.0",
     "react-hot-loader": "^4.9.0",
-    "react-scripts": "^3.1.2"
+    "react-scripts": "^3.3.0-next.39"
   },
   "dependencies": {
     "@vkontakte/icons": "^1.10.0",
     "@vkontakte/vk-connect": "^1.6.8",
-    "@vkontakte/vkui": "^2.30.7",
+    "@vkontakte/vkui": "latest",
     "babel-eslint": "^10.0.3",
     "chalk": "^2.4.2",
     "core-js": "^3.1.4",
+    "express": "^4.17.1",
     "firebase": "^7.2.2",
+    "gh-pages": "^2.1.1",
+    "http-proxy-middleware": "^0.20.0",
     "prop-types": "^15.7.2",
-    "react": "^16.9.0",
+    "react": "latest",
     "react-dom": "^16.9.0",
     "react-redux": "^7.1.1",
     "redux": "^4.0.4"

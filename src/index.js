@@ -7,6 +7,7 @@ import {Provider} from 'react-redux'
 import reducer from './reducers'
 import {createStore} from 'redux'
 import App from './App';
+import registerServiceWorker from './sw';
 
 const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__() && window.__REDUX_DEVTOOLS_EXTENSION__());
 
@@ -15,6 +16,7 @@ schemeAttribute.value = 'bright_light';
 document.body.attributes.setNamedItem(schemeAttribute);
 
 connect.send('VKWebAppInit');
+registerServiceWorker();
 
 ReactDOM.render(
     <Provider store={store}>
