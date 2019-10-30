@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://github.com/VKCOM">
-    <img width="100" height="100" src="https://sun9-58.userapi.com/c855332/v855332619/13ce51/FZinAWdX0qg.jpg">
+    <img width="100" height="100" src="https://sun9-63.userapi.com/c855332/v855332619/13ce50/EbRagDHif5U.jpg">
   </a>
   <br>
   <br>
