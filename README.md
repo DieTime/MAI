@@ -5,9 +5,12 @@
   </a>
   <center><h2>MAI TimeTable</h2></center>
   <br>
+  <br>
+  
+  [![npm][npm]][npm-url]
+  [![deps][deps]][deps-url]
+  
 </div>
-
-
 
 ### Features
 - Support for the selection of a group by profession;
