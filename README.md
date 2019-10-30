@@ -4,10 +4,8 @@
   </a>
 </div>
 
-<center>
 [![version](https://img.shields.io/badge/version-1.1.0-yellow.svg)](https://github.com/DieTime/MAI)
 [![npm version](https://badge.fury.io/js/survey-monkey-streams.svg)](https://github.com/DieTime/MAI)
-</center>
 
 ### Features
 - Support for the selection of a group by profession;
