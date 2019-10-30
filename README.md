@@ -1,11 +1,12 @@
-<div align="center">
-  <a href="https://github.com/VKCOM">
-    <img width="100" height="100" src="https://sun9-63.userapi.com/c855332/v855332619/13ce50/EbRagDHif5U.jpg">
-  </a>
+<p align="center">
+  <img src="https://sun9-63.userapi.com/c855332/v855332619/13ce50/EbRagDHif5U.jpg">
+</p>
+<p align="center">
   <a href="https://github.com/DieTime/MAI"><img src="https://img.shields.io/badge/version-1.1.0-yellow.svg" alt="version"></a>
+</p>
   <h2>MAI schedule</h2>
-</div>
 
+# MAI schedule
 
 ### Features
 - Support for the selection of a group by profession;
