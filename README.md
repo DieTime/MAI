@@ -1,44 +1,21 @@
-<div align="center">
-  <a href="https://github.com/VKCOM">
-    <img width="100" height="100" src="https://avatars3.githubusercontent.com/u/1478241?s=200&v=4">
-  </a>
-  <br>
-  <br>
+<p align="center">
+  <img src="https://sun9-63.userapi.com/c855332/v855332619/13ce50/EbRagDHif5U.jpg" width="110">
+</p>
+<p align="center">
+  <a href="https://github.com/DieTime/MAI"><img src="https://img.shields.io/badge/version-1.1.0-yellow.svg" alt="version"></a>
+</p>
 
-  [![npm][npm]][npm-url]
-  [![deps][deps]][deps-url]
+# MAI schedule
 
-</div>
+### Features
+- Support for the selection of a group by profession;
+- Added week numbers to the dates schedule;
+- Increased loading speed of the app;
+- Next week view button added
+- There was a differentiation of weeks
 
-# VK Mini Apps: @vkontakte/create-vk-mini-app
+### About Laravel
+This is a long-awaited application for viewing the MAI schedule, especially for iOS users who, until now, did not have similar applications.
 
-## How to install
-
-### Create VK Mini App with gh-pages deploy
-
-`npx @vkontakte/create-vk-mini-app <app-directory-name>`
-
-### Create VK Mini App with Zeit deploy
-
-Firstly, you have to create Zeit account and connect it with your GitHub profile — https://zeit.co/
-
-`npx @vkontakte/create-vk-mini-app <app-directory-name> --zeit`
-
-### Create VK Mini App with Surge deploy
-
-Firstly, you have to create Surge account and Surge-domain — https://surge.sh/
-
-`npx @vkontakte/create-vk-mini-app <app-directory-name> --surge <surge-domain>`
-
-## How to start work with app
-
-Go to created folder and run:
-`yarn start` || `npm start` — this will start dev server with hot reload on `localhost:10888`.
-
-`yarn run build` || `npm run build` — this will build production bundle, with tree-shaking, uglify and all this modern fancy stuff
-
-[npm]: https://img.shields.io/npm/v/@vkontakte/create-vk-mini-app.svg
-[npm-url]: https://npmjs.com/package/@vkontakte/create-vk-mini-app
-
-[deps]: https://img.shields.io/david/vkcom/create-vk-mini-app.svg
-[deps-url]: https://david-dm.org/vkcom/create-vk-mini-app
+### Your ideas
+If you have any suggestions, which is clearly not enough in the app, please email them to my address glazzk.off@mail.ru
