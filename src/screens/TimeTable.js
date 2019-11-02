@@ -16,7 +16,17 @@ import {
     platform,
     IOS,
     Header,
-    ANDROID, ModalRoot, ModalPage, ModalPageHeader, HeaderButton, FormLayout, FormLayoutGroup, Radio,
+    ANDROID,
+    ModalRoot,
+    ModalPage,
+    ModalPageHeader,
+    HeaderButton,
+    FormLayout,
+    FormLayoutGroup,
+    Radio,
+    Button,
+    Tooltip,
+    Footer
 } from "@vkontakte/vkui";
 
 const OSNAME = platform();
@@ -32,6 +42,8 @@ class TimeTable extends Component {
                 index: 0
             },
             weeks: [],
+            weekData: [],
+            showMessage: false
         }
     }
 
@@ -59,12 +71,13 @@ class TimeTable extends Component {
                     let subjects = oneDay[1].children[0].children;
                     let dataObj = [];
                     for (let subject of subjects) {
+                        console.log(subjects);
                         let subjectObj = {
                             time: subject.children[0].innerText,
                             type: subject.children[2].innerText,
                             title: subject.children[3].children[0].children[0].innerText,
-                            teacher: (subject.children[3].children[0].children.length < 2) ? '' : subject.children[3].children[0].children[2].innerText,
-                            location: subject.children[4].childNodes[1].nodeValue,
+                            teacher: (subject.children[3].children[0].children.length < 2) ? '' : this.beautify(subject.children[3].children[0].children[2].innerText),
+                            location: (subject.children[4].childNodes.length > 1) ? subject.children[4].childNodes[1].nodeValue : null
                         };
                         dataObj.push(subjectObj);
                     }
@@ -77,7 +90,72 @@ class TimeTable extends Component {
                 }
                 this.setState({dataSet: dataSet});
             })
+            .then(() => {
+                this.setState({weekData: this.getWeekNum()});
+            })
     }
+
+    sortByDay = (arr) => {
+        let days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+        for (let i = 0; i < arr.length - 1; i++) {
+            for (let j = i; j < arr.length; j++) {
+                if (days.indexOf(arr[i]) > days.indexOf(arr[j])) {
+                    let swap = arr[j];
+                    arr[j] = arr[i];
+                    arr[i] = swap;
+                }
+            }
+        }
+        return arr;
+    };
+
+    beautify = (text) => {
+        if (text[0] === ',') {
+            return text.substr(1, text.length).trimLeft();
+        } else {
+            return text;
+        }
+    };
+
+    getWeekNum = () => {
+        if (this.state.dataSet[0] === null) return null;
+        let i = 0;
+        let dayList = [];
+        while (i < this.state.dataSet.length) {
+            dayList.push(this.state.dataSet[i].day);
+            i++;
+        }
+        dayList = this.sortByDay(dayList);
+        if (dayList.length > 0) {
+            let data = null;
+            i = 0;
+            while (i < this.state.dataSet.length) {
+                if (this.state.dataSet[i].day === dayList[0]) {
+                    data = this.state.dataSet[i].data;
+                }
+                i++;
+            }
+            if (data !== null) {
+                i = 1;
+                while (i < this.state.weeks.length) {
+                    let dataArr = this.state.weeks[i].split(" - ");
+                    let startWeekData = dataArr[0].split('.');
+                    let endWeekData = dataArr[1].split('.');
+                    let currentWeekData = data.split('.');
+                    if (startWeekData[1] === currentWeekData[1] && ((parseInt(startWeekData[0]) <= parseInt(currentWeekData[0]) && parseInt(currentWeekData[0]) <= parseInt(endWeekData[0])) || (parseInt(currentWeekData[1]) < parseInt(endWeekData[1])))) {
+                        return {
+                            day: dayList[0],
+                            text: 'Неделя ' + i,
+                            dates: this.state.weeks[i],
+                            week: i
+                        }
+                    }
+                    i++;
+                }
+            }
+        }
+        return null;
+    };
 
     getTimeTable = () => {
         this.setState({dataSet: []});
@@ -101,7 +179,7 @@ class TimeTable extends Component {
                             type: subject.children[2].innerText,
                             title: subject.children[3].children[0].children[0].innerText,
                             teacher: (subject.children[3].children[0].children.length < 2) ? '' : subject.children[3].children[0].children[2].innerText,
-                            location: subject.children[4].childNodes[1].nodeValue,
+                            location: (subject.children[4].childNodes.length > 1) ? subject.children[4].childNodes[1].nodeValue : null
                         };
                         dataObj.push(subjectObj);
                     }
@@ -115,7 +193,11 @@ class TimeTable extends Component {
                 return dataSet;
             })
             .then(data => {
-                this.setState({dataSet: data});
+                if (data.length === 0) this.setState({dataSet: [null]});
+                else this.setState({dataSet: data});
+            })
+            .then(() => {
+                this.setState({weekData: this.getWeekNum()});
             })
     };
 
@@ -162,8 +244,10 @@ class TimeTable extends Component {
                             {this.state.weeks.map((text, index) => {
                                 return (
                                     <Radio name="radio" onClick={async () => {
-                                        await this.setState({currentWeek: {text, index}});
-                                        this.getTimeTable();
+                                        if (this.state.currentWeek.text !== text) {
+                                            await this.setState({currentWeek: {text, index}});
+                                            this.getTimeTable();
+                                        }
                                         this.modalBack();
                                     }} key={text}>{
                                         (index !== 0)
@@ -190,7 +274,7 @@ class TimeTable extends Component {
                         <PanelHeader left={<HeaderButton onClick={() => this.props.chooseGroup("")}
                         ><Icon24UserOutGoing style={{color: '#323232'}}/></HeaderButton>}>
                             <PanelHeaderContent
-                                status={this.state.currentWeek.text === 'Текущая неделя' ? 'Текущая неделя' : this.dateReformat(this.state.currentWeek.text)}
+                                status={this.state.currentWeek.text === 'Текущая неделя' ? 'Текущая неделя' : 'Неделя ' + this.state.currentWeek.index}
                                 aside={<Icon16Dropdown style={{marginLeft: 1}}/>}
                                 onClick={() => this.setActiveModal('weeks')}
                             >
@@ -202,6 +286,24 @@ class TimeTable extends Component {
                     </Panel>
                 </View>
             )
+        } else if (this.state.dataSet[0] === null) {
+            return (
+                <View id='main' activePanel='main' modal={modal}>
+                    <Panel id='main'>
+                        <PanelHeader left={<HeaderButton onClick={() => this.props.chooseGroup("")}
+                        ><Icon24UserOutGoing style={{color: '#323232'}}/></HeaderButton>}>
+                            <PanelHeaderContent
+                                status={this.state.currentWeek.text === 'Текущая неделя' ? 'Текущая неделя' : 'Неделя ' + this.state.currentWeek.index}
+                                aside={<Icon16Dropdown style={{marginLeft: 1}}/>}
+                                onClick={() => this.setActiveModal('weeks')}
+                            >
+                                {this.props.store.group}
+                            </PanelHeaderContent>
+                        </PanelHeader>
+                        <Footer style={{fontSize: 15}}>Нет данных</Footer>
+                    </Panel>
+                </View>
+            )
         } else {
             return (
                 <View id='main' activePanel='main' modal={modal}>
@@ -209,7 +311,7 @@ class TimeTable extends Component {
                         <PanelHeader left={<HeaderButton onClick={() => this.props.chooseGroup("")}
                         ><Icon24UserOutGoing style={{color: '#323232'}}/></HeaderButton>}>
                             <PanelHeaderContent
-                                status={this.state.currentWeek.text === 'Текущая неделя' ? 'Текущая неделя' : this.dateReformat(this.state.currentWeek.text)}
+                                status={this.state.currentWeek.text === 'Текущая неделя' ? 'Текущая неделя' : 'Неделя ' + this.state.currentWeek.index}
                                 aside={<Icon16Dropdown style={{marginLeft: 1}}/>}
                                 onClick={() => this.setActiveModal('weeks')}
                             >
@@ -217,6 +319,133 @@ class TimeTable extends Component {
                             </PanelHeaderContent>
                         </PanelHeader>
                         {this.state.dataSet.map((item, index) => {
+                            if (this.state.weekData !== null && item.day === this.state.weekData.day && index !== 0) return (
+                                <Div key={index} style={(index !== 0) ? {paddingTop: 0, paddingBottom: 14} : {
+                                    paddingTop: 14,
+                                    paddingBottom: 14,
+                                }}>
+                                    <Div style={{
+                                        textAlign: 'center',
+                                        fontSize: 16,
+                                        paddingBottom: 5,
+                                        paddingTop: 3,
+                                        fontWeight: 600
+                                    }}>{this.state.weekData.text}</Div>
+                                    <Div style={{
+                                        textAlign: 'center',
+                                        marginBottom: 17,
+                                        padding: 0,
+                                        fontSize: 14,
+                                        opacity: 0.4
+                                    }}>{'(' + this.state.weekData.dates + ')'}</Div>
+                                    <Div style={{padding: 0, borderRadius: 25}}>
+                                        <Header level="secondary" style={{
+                                            background: '#00a1f5',
+                                            color: '#fff',
+                                            height: 'auto',
+                                            paddingRight: 20,
+                                            paddingLeft: 20,
+                                        }} aside={<h3 style={{margin: 0, color: '#fff'}}>{item.day}</h3>}>
+                                            <h3 style={{margin: 0, color: '#fff'}}>{item.data}</h3>
+                                        </Header>
+                                    </Div>
+                                    {item.subjects.map((subject, index) => {
+                                        return (
+                                            <Div key={index} style={(index === 0) ? {
+                                                background: '#fff',
+                                                paddingLeft: 20,
+                                                paddingRight: 20,
+                                                paddingTop: 20,
+                                                paddingBottom: 0
+                                            } : {
+                                                background: '#fff',
+                                                paddingLeft: 20,
+                                                paddingRight: 20,
+                                                paddingTop: 0,
+                                                paddingBottom: 0
+                                            }}>
+                                                {(index !== 0) ? <div style={{
+                                                    marginBottom: 20,
+                                                    height: '1px',
+                                                    background: '#dcdcdc'
+                                                }}/> : null}
+                                                <Div style={{
+                                                    alignItems: 'center',
+                                                    justifyContent: 'space-between',
+                                                    display: 'flex',
+                                                    padding: 0
+                                                }}>
+                                                    <Div style={{
+                                                        fontSize: 19,
+                                                        color: '#323232',
+                                                        fontWeight: 700,
+                                                        padding: 0
+                                                    }}>
+                                                        {subject.time}
+                                                    </Div>
+                                                    <p style={{
+                                                        fontSize: 15,
+                                                        color: '#323232',
+                                                        margin: 0,
+                                                        fontWeight: 500
+                                                    }}>
+                                                        {subject.type}
+                                                    </p>
+                                                </Div>
+                                                <Div style={{
+                                                    fontSize: 18,
+                                                    color: '#323232',
+                                                    fontWeight: 600,
+                                                    paddingLeft: 0,
+                                                    paddingRight: 0,
+                                                    paddingBottom: 0,
+                                                    paddingTop: 10
+                                                }}>
+                                                    {subject.title}
+                                                </Div>
+                                                {(subject.teacher !== '') ?
+                                                    <Div style={{
+                                                        fontSize: 13,
+                                                        color: '#323232',
+                                                        paddingLeft: 0,
+                                                        paddingRight: 0,
+                                                        paddingBottom: 0,
+                                                        paddingTop: 10
+                                                    }}>
+                                                        {subject.teacher}
+                                                    </Div>
+                                                    :
+                                                    null
+                                                }
+                                                {(subject.location !== null) ?
+                                                    <Div style={{
+                                                        fontSize: 14,
+                                                        color: '#323232',
+                                                        fontWeight: 600,
+                                                        paddingLeft: 0,
+                                                        paddingRight: 0,
+                                                        paddingBottom: 20,
+                                                        paddingTop: 10
+                                                    }}>
+                                                        {subject.location}
+                                                    </Div>
+                                                    :
+                                                    <Div style={{
+                                                        fontSize: 14,
+                                                        color: '#323232',
+                                                        fontWeight: 600,
+                                                        paddingLeft: 0,
+                                                        paddingRight: 0,
+                                                        paddingBottom: 10,
+                                                        paddingTop: 10
+                                                    }}>
+                                                    </Div>
+                                                }
+                                            </Div>
+                                        )
+                                    })}
+                                </Div>
+                            );
                             return (
                                 <Div key={index} style={(index !== 0) ? {paddingTop: 0, paddingBottom: 14} : {
                                     paddingTop: 14,
@@ -314,11 +543,35 @@ class TimeTable extends Component {
                                                 </Div>
                                             </Div>
                                         )
-                                    })
-                                    }
+                                    })}
                                 </Div>
                             )
                         })}
+                        <Div style={{paddingTop: 0}}>
+                            <Tooltip text="Это последняя неделя"
+                                     isShown={this.state.showMessage}
+                                     onClose={() => this.setState({showMessage: false})}
+                                     title="Поздравляем"
+                            >
+                                <Button style={{background: '#00a1f5', color: '#fff'}} size="xl" level="secondary"
+                                        onClick={async () => {
+                                            let info = await this.getWeekNum();
+                                            if (info !== null) {
+                                                await this.setState({
+                                                    currentWeek: {
+                                                        text: toString(info.week + 1),
+                                                        index: info.week + 1
+                                                    }
+                                                });
+                                                this.getTimeTable();
+                                            } else {
+                                                this.setState({showMessage: true})
+                                            }
+                                        }}>
+                                    Слудущая неделя
+                                </Button>
+                            </Tooltip>
+                        </Div>
                     </Panel>
                 </View>
             )
