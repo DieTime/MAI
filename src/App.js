@@ -7,6 +7,7 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 import SelectGroup from './screens/SelectGroup'
 import TimeTable from './screens/TimeTable'
+import LoadingScreen from './screens/LoadingScreen'
 
 class App extends Component {
     constructor(props) {
@@ -42,7 +43,7 @@ class App extends Component {
 
     render() {
         if (this.state.loading) {
-            return null
+            return <LoadingScreen/>
         } else if (this.props.store.group === "") {
             return <SelectGroup/>
         } else {

@@ -268,7 +268,7 @@ class SelectGroup extends Component {
                                  onClose={() => this.setState({showMessage: false})}
                                  title="Перед выбором группы"
                         >
-                            <Button style={{background: '#00a1f5', color: '#fff'}} size="xl"
+                            <Button style={{background: 'linear-gradient(110deg, #00AEFF, #029ef5)', color: '#fff'}} size="xl"
                                     level="secondary" onClick={() => {
                                 if (this.state.faculty !== null && this.state.curse !== null && this.state.type !== null) {
                                     this.getGroupsList();

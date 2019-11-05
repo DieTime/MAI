@@ -5,6 +5,7 @@ import Icon16Dropdown from '@vkontakte/icons/dist/16/dropdown';
 import Icon24Cancel from '@vkontakte/icons/dist/24/cancel';
 import Icon24Dismiss from '@vkontakte/icons/dist/24/dismiss';
 import Icon24UserOutGoing from '@vkontakte/icons/dist/24/user_outgoing';
+import LoadingScreen from './LoadingScreen'
 
 import {
     Panel,
@@ -77,7 +78,7 @@ class TimeTable extends Component {
                             type: subject.children[2].innerText,
                             title: subject.children[3].children[0].children[0].innerText,
                             teacher: (subject.children[3].children[0].children.length < 2) ? '' : this.beautify(subject.children[3].children[0].children[2].innerText),
-                            location: (subject.children[4].childNodes.length > 1) ? subject.children[4].childNodes[1].nodeValue : null
+                            location: (subject.children[4].childNodes.length > 1) ? subject.children[4].childNodes[1].nodeValue : '--каф.'
                         };
                         dataObj.push(subjectObj);
                     }
@@ -179,7 +180,7 @@ class TimeTable extends Component {
                             type: subject.children[2].innerText,
                             title: subject.children[3].children[0].children[0].innerText,
                             teacher: (subject.children[3].children[0].children.length < 2) ? '' : subject.children[3].children[0].children[2].innerText,
-                            location: (subject.children[4].childNodes.length > 1) ? subject.children[4].childNodes[1].nodeValue : null
+                            location: (subject.children[4].childNodes.length > 1) ? subject.children[4].childNodes[1].nodeValue : '--каф.'
                         };
                         dataObj.push(subjectObj);
                     }
@@ -263,10 +264,7 @@ class TimeTable extends Component {
         );
 
         if (this.state.weeks.length === 0) {
-            return (
-                <Spinner size="large"
-                         style={{position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, margin: 'auto'}}/>
-            )
+                return <LoadingScreen/>
         } else if (this.state.dataSet.length === 0) {
             return (
                 <View id='main' activePanel='main' modal={modal}>
@@ -417,30 +415,17 @@ class TimeTable extends Component {
                                                     :
                                                     null
                                                 }
-                                                {(subject.location !== null) ?
-                                                    <Div style={{
-                                                        fontSize: 14,
-                                                        color: '#323232',
-                                                        fontWeight: 600,
-                                                        paddingLeft: 0,
-                                                        paddingRight: 0,
-                                                        paddingBottom: 20,
-                                                        paddingTop: 10
-                                                    }}>
-                                                        {subject.location}
-                                                    </Div>
-                                                    :
-                                                    <Div style={{
-                                                        fontSize: 14,
-                                                        color: '#323232',
-                                                        fontWeight: 600,
-                                                        paddingLeft: 0,
-                                                        paddingRight: 0,
-                                                        paddingBottom: 10,
-                                                        paddingTop: 10
-                                                    }}>
-                                                    </Div>
-                                                }
+                                                <Div style={{
+                                                    fontSize: 14,
+                                                    color: '#323232',
+                                                    fontWeight: 600,
+                                                    paddingLeft: 0,
+                                                    paddingRight: 0,
+                                                    paddingBottom: 20,
+                                                    paddingTop: 10
+                                                }}>
+                                                    {subject.location}
+                                                </Div>
                                             </Div>
                                         )
                                     })}
@@ -453,7 +438,7 @@ class TimeTable extends Component {
                                 }}>
                                     <Div style={{padding: 0}}>
                                         <Header level="secondary" style={{
-                                            background: '#00a1f5',
+                                            background: 'linear-gradient(110deg, #00AEFF, #029ef5)',
                                             color: '#fff',
                                             height: 'auto',
                                             paddingRight: 20,
@@ -553,7 +538,7 @@ class TimeTable extends Component {
                                      onClose={() => this.setState({showMessage: false})}
                                      title="Поздравляем"
                             >
-                                <Button style={{background: '#00a1f5', color: '#fff'}} size="xl" level="secondary"
+                                <Button style={{background: 'linear-gradient(110deg, #00AEFF, #029ef5)', color: '#fff'}} size="xl" level="secondary"
                                         onClick={async () => {
                                             let info = await this.getWeekNum();
                                             if (info !== null) {
