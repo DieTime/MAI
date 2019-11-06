@@ -13,6 +13,7 @@
 - Increased loading speed of the app;
 - Next week view button added
 - There was a differentiation of weeks
+- Session schedule added
 
 ### About Laravel
 This is a long-awaited application for viewing the MAI schedule, especially for iOS users who, until now, did not have similar applications.
