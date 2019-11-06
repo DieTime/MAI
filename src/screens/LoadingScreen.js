@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Spinner} from "@vkontakte/vkui";
+import {Spinner, Div} from "@vkontakte/vkui";
 
 export default class LoadingScreen extends Component {
     render() {
@@ -12,7 +12,7 @@ export default class LoadingScreen extends Component {
                 justifyContent: 'flex-end',
                 flexDirection: 'column'
             }}>
-                <div style={{height: '63%', display: 'flex', alignItems: 'flex-end'}}>
+                <div style={{height: '60%', display: 'flex', alignItems: 'flex-end'}}>
                     <svg
                         style={{marginBottom: 20}}
                         xmlns="http://www.w3.org/2000/svg"
@@ -31,6 +31,9 @@ export default class LoadingScreen extends Component {
                 <div style={{height: '50%', display: 'flex', alignItems: 'flex-start'}}>
                     <div style={{marginTop: 20, color: '#fff'}}>
                         <Spinner size='medium' style={{color: '#fff'}}/>
+                        <Div style={{fontSize: 13}}>
+                            {this.props.text}
+                        </Div>
                     </div>
                 </div>
             </div>

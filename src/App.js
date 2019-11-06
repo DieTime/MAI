@@ -43,7 +43,7 @@ class App extends Component {
 
     render() {
         if (this.state.loading) {
-            return <LoadingScreen/>
+            return <LoadingScreen text='Загрузка данных о группе...'/>
         } else if (this.props.store.group === "") {
             return <SelectGroup/>
         } else {
