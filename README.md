@@ -2,7 +2,7 @@
   <img src="https://sun9-63.userapi.com/c855332/v855332619/13ce50/EbRagDHif5U.jpg" width="110">
 </p>
 <p align="center">
-  <a href="https://github.com/DieTime/MAI"><img src="https://img.shields.io/badge/version-1.1.0-yellow.svg" alt="version"></a>
+  <a href="https://github.com/DieTime/MAI"><img src="https://img.shields.io/badge/version-1.1.0-green.svg" alt="version"></a>
 </p>
 
 # MAI schedule
