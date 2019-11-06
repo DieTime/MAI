@@ -686,7 +686,7 @@ class TimeTable extends Component {
                     <Panel id='session'>
                         <PanelHeader
                             left={<HeaderButton onClick={() => this.setState({activePanel: 'main'})}><Icon28ChevronBack
-                                style={{color: '#000', paddingLeft: 10}}/></HeaderButton>}
+                                style={{color: '#000'}}/></HeaderButton>}
                         >
                             <PanelHeaderContent
                                 status={this.props.store.group}
