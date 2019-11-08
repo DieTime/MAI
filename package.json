@@ -1,6 +1,6 @@
 {
   "name": "@dietime/mai_timetable",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "homepage": "./",
   "description": "MAI timetable",
   "main": "index.js",
@@ -21,7 +21,7 @@
   "dependencies": {
     "@vkontakte/icons": "^1.10.0",
     "@vkontakte/vk-connect": "^1.6.8",
-    "@vkontakte/vkui": "latest",
+    "@vkontakte/vkui": "^2.30.0",
     "babel-eslint": "^10.0.3",
     "chalk": "^2.4.2",
     "core-js": "^3.1.4",
