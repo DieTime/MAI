@@ -188,7 +188,7 @@ class TimeTable extends Component {
                             time: subject.children[0].innerText,
                             type: subject.children[2].innerText,
                             title: subject.children[3].children[0].children[0].innerText,
-                            teacher: (subject.children[3].children[0].children.length < 2) ? '' : subject.children[3].children[0].children[2].innerText,
+                            teacher: (subject.children[3].children[0].children.length < 2) ? '' : this.beautify(subject.children[3].children[0].children[2].innerText),
                             location: (subject.children[4].childNodes.length > 1) ? subject.children[4].childNodes[1].nodeValue : '--каф.'
                         };
                         dataObj.push(subjectObj);
@@ -676,6 +676,7 @@ class TimeTable extends Component {
                                                                 index: info.week + 1
                                                             }
                                                         });
+                                                        await this.setState({dataSet: [null], weekData: []});
                                                         this.getTimeTable();
                                                     } else {
                                                         this.setState({showMessage: true})

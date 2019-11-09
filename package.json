@@ -11,7 +11,7 @@
     "deploy": "gh-pages -d build"
   },
   "keywords": [],
-  "author": "",
+  "author": "Denis Glazkov",
   "license": "MIT",
   "devDependencies": {
     "cross-env": "^5.2.0",
