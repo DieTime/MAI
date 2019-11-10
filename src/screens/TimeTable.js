@@ -682,7 +682,7 @@ class TimeTable extends Component {
                                                         this.setState({showMessage: true})
                                                     }
                                                 }}>
-                                            Слудущая неделя
+                                            Следующая неделя
                                         </Button>
                                     </Tooltip>
                                 </Div>
