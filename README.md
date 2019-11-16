@@ -6,6 +6,7 @@
 </p>
 
 # MAI schedule
+https://vk.com/app7173256_215115449
 
 ### Features
 - Support for the selection of a group by profession;
