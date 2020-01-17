@@ -663,7 +663,8 @@ class TimeTable extends Component {
                                         }} size="xl" level="secondary"
                                                 onClick={async () => {
                                                     let info = await this.getWeekNum();
-                                                    if (info !== null) {
+                                                    console.log(info);
+                                                    if (info[0] !== null) {
                                                         await this.setState({
                                                             currentWeek: {
                                                                 text: toString(info.week + 1),
