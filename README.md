@@ -2,10 +2,11 @@
   <img src="https://sun9-63.userapi.com/c855332/v855332619/13ce50/EbRagDHif5U.jpg" width="110">
 </p>
 <p align="center">
-  <a href="https://github.com/DieTime/MAI"><img src="https://img.shields.io/badge/version-1.1.0-yellow.svg" alt="version"></a>
+  <a href="https://github.com/DieTime/MAI"><img src="https://img.shields.io/badge/version-1.2.0-green.svg" alt="version"></a>
 </p>
 
 # MAI schedule
+https://vk.com/app7173256_215115449
 
 ### Features
 - Support for the selection of a group by profession;
@@ -13,6 +14,7 @@
 - Increased loading speed of the app;
 - Next week view button added
 - There was a differentiation of weeks
+- Session schedule added
 
 ### About Laravel
 This is a long-awaited application for viewing the MAI schedule, especially for iOS users who, until now, did not have similar applications.

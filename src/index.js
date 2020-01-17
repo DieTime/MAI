@@ -6,6 +6,7 @@ import connect from '@vkontakte/vk-connect';
 import {Provider} from 'react-redux'
 import reducer from './reducers'
 import {createStore} from 'redux'
+import ErrorBoundary from './ErrorBoundary'
 import App from './App';
 
 const store = createStore(reducer);
@@ -17,7 +18,9 @@ document.body.attributes.setNamedItem(schemeAttribute);
 connect.send('VKWebAppInit');
 
 ReactDOM.render(
-    <Provider store={store}>
-        <App/>
-    </Provider>, document.getElementById('root')
+    <ErrorBoundary>
+        <Provider store={store}>
+            <App/>
+        </Provider>
+    </ErrorBoundary>, document.getElementById('root')
 );

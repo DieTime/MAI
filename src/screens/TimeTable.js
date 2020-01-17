@@ -4,7 +4,7 @@ import {reduxConnect} from "react-redux";
 import Icon16Dropdown from '@vkontakte/icons/dist/16/dropdown';
 import Icon24Cancel from '@vkontakte/icons/dist/24/cancel';
 import Icon24Dismiss from '@vkontakte/icons/dist/24/dismiss';
-import Icon24More from '@vkontakte/icons/dist/24/more_horizontal';
+import Icon28More from '@vkontakte/icons/dist/28/more';
 import Icon28ChevronBack from '@vkontakte/icons/dist/28/chevron_back';
 import LoadingScreen from './LoadingScreen'
 
@@ -19,6 +19,7 @@ import {
     Header,
     ANDROID,
     ModalRoot,
+    PullToRefresh,
     ModalPage,
     ModalPageHeader,
     HeaderButton,
@@ -52,7 +53,8 @@ class TimeTable extends Component {
             weekData: [],
             showMessage: false,
             activePanel: 'main',
-            contextOpened: false
+            contextOpened: false,
+            fetching: false,
         }
     }
 
@@ -100,7 +102,7 @@ class TimeTable extends Component {
                 else this.setState({dataSet: dataSet});
             })
             .then(() => {
-                this.setState({weekData: this.getWeekNum()});
+                this.setState({weekData: this.getWeekNum(), fetching: false});
             })
     }
 
@@ -167,8 +169,6 @@ class TimeTable extends Component {
     };
 
     getTimeTable = () => {
-        this.setState({dataSet: [null]});
-        this.setState({weekData: []});
         let week = (this.state.currentWeek.text === 'Текущая неделя') ? '' : '&week=' + this.state.currentWeek.index;
         fetch('https://cors-anywhere.herokuapp.com/https://mai.ru/education/schedule/detail.php?group=' + this.props.store.group + week)
             .then((response) => response.text())
@@ -188,7 +188,7 @@ class TimeTable extends Component {
                             time: subject.children[0].innerText,
                             type: subject.children[2].innerText,
                             title: subject.children[3].children[0].children[0].innerText,
-                            teacher: (subject.children[3].children[0].children.length < 2) ? '' : subject.children[3].children[0].children[2].innerText,
+                            teacher: (subject.children[3].children[0].children.length < 2) ? '' : this.beautify(subject.children[3].children[0].children[2].innerText),
                             location: (subject.children[4].childNodes.length > 1) ? subject.children[4].childNodes[1].nodeValue : '--каф.'
                         };
                         dataObj.push(subjectObj);
@@ -207,7 +207,7 @@ class TimeTable extends Component {
                 else this.setState({dataSet: data});
             })
             .then(() => {
-                this.setState({weekData: this.getWeekNum()});
+                this.setState({weekData: this.getWeekNum(), fetching: false});
             })
     };
 
@@ -268,6 +268,9 @@ class TimeTable extends Component {
                 if (data.length === 0) this.setState({sessionDataSet: [null]});
                 else this.setState({sessionDataSet: data});
             })
+            .then(() => {
+                this.setState({fetching: false})
+            })
     };
 
     render() {
@@ -295,6 +298,7 @@ class TimeTable extends Component {
                                     <Radio name="radio" onClick={async () => {
                                         if (this.state.currentWeek.text !== text) {
                                             await this.setState({currentWeek: {text, index}});
+                                            await this.setState({dataSet: [null], weekData: []});
                                             this.getTimeTable();
                                         }
                                         this.modalBack();
@@ -319,7 +323,7 @@ class TimeTable extends Component {
                     <Panel id='main'>
                         <PanelHeader left={<HeaderButton
                             onClick={() => this.setState({contextOpened: !this.state.contextOpened})}
-                        ><Icon24More style={{color: '#323232'}}/></HeaderButton>}>
+                        ><Icon28More style={OSNAME === IOS ? {paddingLeft: 12, color: '#323232'} : {color: '#323232'}}/></HeaderButton>}>
                             <PanelHeaderContent
                                 status={this.state.currentWeek.text === 'Текущая неделя' ? 'Текущая неделя' : 'Неделя ' + this.state.currentWeek.index}
                                 aside={<Icon16Dropdown style={{marginLeft: 1}}/>}
@@ -350,7 +354,9 @@ class TimeTable extends Component {
                                     onClick={() => {
                                         this.setState({contextOpened: !this.state.contextOpened});
                                         this.setState({activePanel: 'session'});
-                                        this.getSession();
+                                        if (this.state.sessionDataSet.length === 0) {
+                                            this.getSession();
+                                        }
                                     }}
                                 >
                                     Расписание сессии
@@ -430,7 +436,7 @@ class TimeTable extends Component {
                                 }
                             </div>
                             :
-                            <div>
+                            <PullToRefresh onRefresh={() => {this.setState({fetching: true}); this.getTimeTable()}} isFetching={this.state.fetching}>
                                 {this.state.dataSet.map((item, index) => {
                                     if (item.day === this.state.weekData.day && index !== 0) return (
                                         <Div key={index}
@@ -671,23 +677,24 @@ class TimeTable extends Component {
                                                                 index: info.week + 1
                                                             }
                                                         });
+                                                        await this.setState({dataSet: [null], weekData: []});
                                                         this.getTimeTable();
                                                     } else {
                                                         this.setState({showMessage: true})
                                                     }
                                                 }}>
-                                            Слудущая неделя
+                                            Следующая неделя
                                         </Button>
                                     </Tooltip>
                                 </Div>
-                            </div>
+                            </PullToRefresh>
                         }
 
                     </Panel>
                     <Panel id='session'>
                         <PanelHeader
                             left={<HeaderButton onClick={() => this.setState({activePanel: 'main'})}><Icon28ChevronBack
-                                style={{color: '#000'}}/></HeaderButton>}
+                                style={OSNAME === IOS ? {color: '#323232', paddingLeft: 12} : {color: '#323232'}}/></HeaderButton>}
                         >
                             <PanelHeaderContent
                                 status={this.props.store.group}
@@ -702,7 +709,7 @@ class TimeTable extends Component {
                             : <div>
                                 {this.state.sessionDataSet[0] === null
                                     ? <Footer style={{fontSize: 16}}>Нет данных</Footer>
-                                    : <div>
+                                    : <PullToRefresh onRefresh={() => {this.setState({fetching: true}); this.getSession()}} isFetching={this.state.fetching}>
                                         {this.state.sessionDataSet.map((item, index) => {
                                             return (
                                                 <Div key={index}
@@ -807,7 +814,7 @@ class TimeTable extends Component {
                                                 </Div>
                                             )
                                         })}
-                                    </div>
+                                    </PullToRefresh>
                                 }
                             </div>
                         }
