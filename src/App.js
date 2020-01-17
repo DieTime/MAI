@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import '@vkontakte/vkui/dist/vkui.css';
 import {reduxConnect} from "react-redux";
 import connect from '@vkontakte/vk-connect';
-import firebaseConfig from "./config";
+import {firebaseConfig} from "./config";
 import firebase from 'firebase/app';
 import 'firebase/database';
 import SelectGroup from './screens/SelectGroup'

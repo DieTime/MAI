@@ -21,7 +21,7 @@
   "dependencies": {
     "@vkontakte/icons": "^1.10.0",
     "@vkontakte/vk-connect": "^1.6.8",
-    "@vkontakte/vkui": "^2.30.0",
+    "@vkontakte/vkui": "^2.34.1",
     "babel-eslint": "^10.0.3",
     "chalk": "^2.4.2",
     "core-js": "^3.1.4",
