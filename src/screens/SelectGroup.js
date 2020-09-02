@@ -45,7 +45,6 @@ class SelectGroup extends Component {
             faculty: null,
             curse: null,
             type: null,
-            schedule: null,
             groups: [],
             showMessage: false,
         }
@@ -95,7 +94,7 @@ class SelectGroup extends Component {
     getGroupsList = () => {
         this.setState({groups: []});
         this.setState({popout: <ScreenSpinner/>});
-        fetch('https://cors-anywhere.herokuapp.com/https://mai.ru/education/schedule/?department=' + this.state.schedule + '&course=' + this.state.curse)
+        fetch('https://cors-anywhere.herokuapp.com/https://mai.ru/education/schedule/?department=' + this.state.faculty.replace(' ', '+') + '&course=' + this.state.curse)
             .then((response) => response.text())
             .then((html) => {
                 let parser = new DOMParser();
@@ -145,10 +144,9 @@ class SelectGroup extends Component {
                             {faculties.map((elem) => {
                                 return (
                                     <Radio name="radio" onClick={() => {
-                                        this.setState({faculty: elem.faculty});
-                                        this.setState({schedule: elem.schedule});
+                                        this.setState({faculty: elem});
                                         this.modalBack();
-                                    }} key={elem.schedule}>{elem.faculty}</Radio>
+                                    }} key={elem}>{elem}</Radio>
                                 );
                             })}
                         </FormLayoutGroup>

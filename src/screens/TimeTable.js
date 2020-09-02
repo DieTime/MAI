@@ -75,6 +75,7 @@ class TimeTable extends Component {
 
                 let dataSet = [];
                 cells = htmlDoc.getElementsByClassName('sc-table-day');
+                console.log(cells)
                 for (let item of cells) {
                     let oneDay = item.children[0].children;
                     let day = oneDay[0].children[0].innerText;
@@ -87,7 +88,7 @@ class TimeTable extends Component {
                             type: subject.children[2].innerText,
                             title: subject.children[3].children[0].children[0].innerText,
                             teacher: (subject.children[3].children[0].children.length < 2) ? '' : this.beautify(subject.children[3].children[0].children[2].innerText),
-                            location: (subject.children[4].childNodes.length > 1) ? subject.children[4].childNodes[1].nodeValue : '--каф.'
+                            location: subject.children[4].innerText.trim()
                         };
                         dataObj.push(subjectObj);
                     }
